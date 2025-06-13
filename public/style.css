@@ -1,0 +1,20 @@
+body {
+    color: #333333;
+    background-color: beige;
+    margin: 20px;
+}
+
+.button {
+    color: #FDF6E3;
+    background-color: #5D4037;
+    
+    
+
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 200px;
+}
+
+.content {
+    
+}
