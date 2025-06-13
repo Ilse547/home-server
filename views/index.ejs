@@ -9,6 +9,9 @@
     <% files.forEach(file => { %>
         <li>
             <a href="/uploads/<%= file %>" download="<%= file %>"><%= file %></a>
+            <form action="/delete/<%= file %>" method="POST" style="display:inline;">
+            <button type="submit">Delete</button>
+                </form>
         </li>
     <% }) %>
 </ul>

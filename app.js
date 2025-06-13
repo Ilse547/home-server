@@ -4,6 +4,7 @@ import multer from "multer";
 import path, { resolve } from "path";
 import fs from "fs";
 import { fileURLToPath } from "url";
+import os from "os"
 
 
 const __filename = fileURLToPath(import.meta.url)
@@ -84,7 +85,44 @@ app.get("/download:filename", (request, response) => {
   })
 })
 
+// Route to handle file deletion
+app.post("/delete/:filename", (request, response) => {
+  const filename = request.params.filename;
+  const filePath = path.join(__dirname, "uploads", filename);
+
+  // Check if the file exists
+  if (!fs.existsSync(filePath)) {
+    return response.status(404).send("File not found");
+  }
+
+  // Delete the file
+  fs.unlink(filePath, (err) => {
+    if (err) {
+      console.error("Error deleting file:", err);
+      return response.status(500).send("Error deleting file");
+    }
+
+    console.log(`File deleted: ${filename}`);
+    response.redirect("/"); // Redirect back to the home page
+  });
+});
+
+
+function getLocalIPAdress(){
+  const interfaces = os.networkInterfaces();
+  for (const interfaceName in interfaces) {
+    for(const iface of interfaces[interfaceName] || []){
+      if (iface.family == "IPv4" && !iface.internal){
+        return iface.address
+      }
+    }
+  }
+  return "localhost"
+}
+
 app.listen(PORT, () => {
-console.log(` server on http://localhost:${3000}`);
+  const localIP = getLocalIPAdress()
+console.log(` server on http://localhost:${3000}`)
+console.log(` Network: http://${localIP}:${PORT}`)
 
 })
