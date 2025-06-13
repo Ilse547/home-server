@@ -1,0 +1,10 @@
+<!DOCTYPE html>
+<%- include('includes/head', {title: "upload a file"}) %>
+<body>
+    <h1> Upload a file :</h1>
+    <form action="/up" method="post" enctype="multipart/form-data">
+        <input type="file" name="myFile" required /> <br>
+        <button type="submit">upload file</button>
+    </form>
+
+</body>
