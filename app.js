@@ -23,6 +23,8 @@ app.use(express.static('public'))
 app.set("views", "./views");
 app.set("view engine", "ejs");
 app.use(logger)
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+
 
 app.get('/', (request, response) => {
   const uploadDir = path.join(__dirname, "uploads")
@@ -64,6 +66,22 @@ app.post("/up", upload.single("myFile"), (request, response) => {
   }
 
 
+})
+
+app.get("/download:filename", (request, response) => {
+  const filename = request-URLSearchParams.filename
+  const filePath = path.join(__dirname, "uploads", filename)
+
+  if(!fs.existsSync(filePath)){
+    return response.status(404).send("file not found :(")
+  }
+
+  response.download(filePath, filename, (error) => {
+    if(error){
+      console.error("there was an error trying to download the file: ", error)
+      response.status(500).send("error downloading the file")
+    }
+  })
 })
 
 app.listen(PORT, () => {
